@@ -32,11 +32,7 @@ jobs:
         -v $GITHUB_WORKSPACE:/boost-test \
         -w /boost-test \
         docker.pkg.github.com/oscaredv/boost-test/builder:20.04 \
-        mkdir build \
-        cd build \
-        cmake .. \
-        make \
-        make coverage
+        bash -c "mkdir -p build; cd build; cmake ..; make ; make coverage"
     - name: Upload results
       uses: actions/upload-artifact@v2
       with:

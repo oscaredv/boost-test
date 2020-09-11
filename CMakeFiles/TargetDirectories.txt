@@ -1,5 +1,0 @@
-/boost-test/build/CMakeFiles/rebuild_cache.dir
-/boost-test/build/CMakeFiles/edit_cache.dir
-/boost-test/build/CMakeFiles/test.dir
-/boost-test/build/CMakeFiles/tests.dir
-/boost-test/build/CMakeFiles/coverage.dir

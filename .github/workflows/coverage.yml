@@ -46,3 +46,10 @@ jobs:
         BRANCH: gh-pages # The branch the action should deploy to.
         FOLDER: build/coverage # The folder the action should deploy.
         CLEAN: true # Automatically remove deleted files from the deploy branch
+
+    - name: Coverage report
+      uses: romeovs/lcov-reporter-action@v0.2.16
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        lcov-file: ./build/tests.info
+  

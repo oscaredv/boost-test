@@ -48,12 +48,18 @@ jobs:
         CLEAN: true # Automatically remove deleted files from the deploy branch
 
     - name: Coverage report
-      uses: devmasx/coverage-check-action@v1.1.0
+      uses: vebr/jest-lcov-reporter@v0.2.0
       with:
-        type: lcov
-        result_path: ./build/tests.info
-        min_coverage: 90
-        token: ${{secrets.GITHUB_TOKEN}}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        lcov-file: ./build/tests.info
+  
+#    - name: Coverage report
+#      uses: devmasx/coverage-check-action@v1.1.0
+#      with:
+#        type: lcov
+#        result_path: ./build/tests.info
+#        min_coverage: 90
+#        token: ${{secrets.GITHUB_TOKEN}}
 
 #    - name: Coverage report
 #      uses: ambimax/action-report-coverage@add-support-for-push-event

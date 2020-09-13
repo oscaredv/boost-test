@@ -32,14 +32,14 @@ jobs:
         -v $GITHUB_WORKSPACE:/boost-test \
         -w /boost-test \
         docker.pkg.github.com/oscaredv/boost-test/builder:20.04 \
-        bash -c "mkdir -p build; cd build; cmake ..; make ; make coverage"
+        bash -c "ls; ls build; mkdir -p build; cd build; cmake ..; make ; make coverage"
     - name: Upload results
       uses: actions/upload-artifact@v2
       with:
         name: CoverageReport
         path: build/coverage
 
-    - name: Deploy 🚀
+    - name: Deploy
       uses: JamesIves/github-pages-deploy-action@3.5.9
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -48,23 +48,9 @@ jobs:
         CLEAN: true # Automatically remove deleted files from the deploy branch
 
     - name: Coverage report
-      uses: vebr/jest-lcov-reporter@v0.2.0
+      uses: devmasx/coverage-check-action@v1.1.0
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        lcov-file: ./build/tests.info
-  
-#    - name: Coverage report
-#      uses: devmasx/coverage-check-action@v1.1.0
-#      with:
-#        type: lcov
-#        result_path: ./build/tests.info
-#        min_coverage: 90
-#        token: ${{secrets.GITHUB_TOKEN}}
-
-#    - name: Coverage report
-#      uses: ambimax/action-report-coverage@add-support-for-push-event
-      #uses: romeovs/lcov-reporter-action@v0.2.11
-#      with:
-#        github-token: ${{ secrets.GITHUB_TOKEN }}
-#        lcov-file: ./build/tests.info
-  
+        type: lcov
+        result_path: ./build/tests.info
+        min_coverage: 90
+        token: ${{secrets.GITHUB_TOKEN}}

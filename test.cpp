@@ -3,11 +3,11 @@
 
 class MyClass {
  public:
-  bool jau() { return true; }
+  bool func() { return true; }
 };
 
 BOOST_AUTO_TEST_CASE(my_test) {
   MyClass mc;
 
-  BOOST_CHECK(mc.jau());
+  BOOST_CHECK(mc.func());
 }

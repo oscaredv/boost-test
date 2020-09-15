@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: Tests
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -10,11 +8,14 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: RelWithDebInfo
+  DOCKER_IMAGE: docker.pkg.github.com/brunvoll-group/brucon5/builder-ubuntu:20.04
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  build_and_run_tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,33 +25,12 @@ jobs:
       run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
 
     - name: Pull Docker image
-      run: docker pull docker.pkg.github.com/oscaredv/boost-test/builder:20.04
+      run: docker pull $DOCKER_IMAGE
 
     - name: Run Docker image and compile code
       run: |
         docker run --rm --name builder \
-        -v $GITHUB_WORKSPACE:/boost-test \
-        -w /boost-test \
-        docker.pkg.github.com/oscaredv/boost-test/builder:20.04 \
-        bash -c "ls; ls build; mkdir -p build; cd build; cmake ..; make ; make coverage"
-    - name: Upload results
-      uses: actions/upload-artifact@v2
-      with:
-        name: CoverageReport
-        path: build/coverage
-
-    - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@3.5.9
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: build/coverage # The folder the action should deploy.
-        CLEAN: true # Automatically remove deleted files from the deploy branch
-
-    - name: Coverage report
-      uses: devmasx/coverage-check-action@v1.1.0
-      with:
-        type: lcov
-        result_path: ./build/tests.info
-        min_coverage: 90
-        token: ${{secrets.GITHUB_TOKEN}}
+        -v $GITHUB_WORKSPACE:/brucon5 \
+        -w /brucon5 \
+        $DOCKER_IMAGE \
+        bash -c "mkdir -p build; cd build; cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_TESTS=ON; make ; make test"

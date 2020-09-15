@@ -33,4 +33,4 @@ jobs:
         -v $GITHUB_WORKSPACE:/boost-test \
         -w /boost-test \
         $DOCKER_IMAGE \
-        bash -c "mkdir -p build; cd build; cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_TESTS=ON; make ; make test"
+        bash -c "cmake -S . -B build -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_TESTS=ON; cmake --build build --config $BUILD_TYPE; cmake --build build --config $BUILD_TYPE --target test"

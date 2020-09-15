@@ -11,7 +11,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: RelWithDebInfo
-  DOCKER_IMAGE: docker.pkg.github.com/brunvoll-group/brucon5/builder-ubuntu:20.04
+  DOCKER_IMAGE: docker.pkg.github.com/oscaredv/boost-test/builder:20.04
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -30,7 +30,7 @@ jobs:
     - name: Run Docker image and compile code
       run: |
         docker run --rm --name builder \
-        -v $GITHUB_WORKSPACE:/brucon5 \
-        -w /brucon5 \
+        -v $GITHUB_WORKSPACE:/boost-test \
+        -w /boost-test \
         $DOCKER_IMAGE \
         bash -c "mkdir -p build; cd build; cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_TESTS=ON; make ; make test"
